@@ -32,11 +32,11 @@ class User {
                 die();
             }
 
-        $sql = "INSERT INTO users (username, email, password) VALUES(:username_IN, :password_IN, :email_IN)";
+        $sql = "INSERT INTO users (username, password, email) VALUES(:username_IN, :password_IN, :email_IN)";
         $statement = $this->db_connection->prepare($sql);
         $statement->bindParam(":username_IN", $username_IN);
-        $statement->bindParam(":email_IN", $email_IN);
         $statement->bindParam(":password_IN", $password_IN);
+        $statement->bindParam(":email_IN", $email_IN);
 
             if (!$statement->execute()) {
                 echo "Cant create user!";
@@ -64,6 +64,64 @@ class User {
 
 
 
+    function Login($username_IN, $password_IN) {
+        $sql = "SELECT id, username, email FROM users WHERE username=:username_IN AND password=:password_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":username_IN", $username_IN);
+        $statement->bindParam(":password_IN", $password_IN);
+
+        $statement->execute();
+    
+        if($statement->rowCount() == 1) { // If user types the right username&password
+            $row = $statement->fetch();
+            $this->CreateToken($row['id'], $row['username']);
+            
+
+        }
+    }
+
+
+    function CreateToken($id, $username) {
+
+        if($this->ScanToken($id) != false); 
+        $token = md5(time()) . $id . $username;
+        $time = time();
+        
+        $sql = "INSERT INTO session (user_id, token, login_time) VALUES(:user_id_IN, :token_IN, :login_time_IN)";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":user_id_IN", $id);
+        $statement->bindParam(":token_IN", $token);
+        $statement->bindParam(":login_time_IN", $time);
+
+        $statement->execute();
+        
+
+    }
+
+
+    function ScanToken($id) {
+        $sql = "SELECT token, login_time FROM session WHERE user_id=:user_id_IN AND login_time > :TimeLeft_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":user_id_IN", $id);
+        $statement->bindParam(":TimeLeft_IN", $TimeLeft);
+        $statement->execute();
+
+        $TimeLeft = time() - (60*60);
+
+        $return = $statement->fetch();
+
+        if(isset($return['token'])) {
+            return $return['token'];
+        } 
+        else {
+            return false;
+        }
+
+
+
+        die();
+        
+    }
 
 
 }

@@ -80,7 +80,7 @@ class User {
         }
 
         else {
-            $error = new stdClass();
+                $error = new stdClass();
                 $error->message = "Invalid username or password!";
                 $error->code = "0002";
                 echo json_encode($error);
@@ -136,6 +136,27 @@ class User {
         }
     }
 
+    function ValidationToken($token) {
+        $sql = "SELECT token, login_time FROM session WHERE token=:token_IN AND login_time > :TimeLeft_IN LIMIT 1";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":token_IN", $token);
+        $TimeLeft = time() - (60*60);
+        $statement->bindParam(":TimeLeft_IN", $TimeLeft);
+        
+
+        $statement->execute();
+        
+        $return = $statement->fetch();
+
+        if(isset($return['token'])) {
+            return $return['token'];
+        } 
+        else {
+            return false;
+        }
+    }
+    }
+    
 
 }
 

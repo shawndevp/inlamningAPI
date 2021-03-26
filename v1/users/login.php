@@ -8,4 +8,9 @@ include("../../objects/Users.php");
 
 
     $user = new User($pdo);
-    $user->Login($username, $password);
+
+    $return = new stdClass();
+
+    $return->token = $user->login($username, $password);
+
+    print_r(json_encode($return));

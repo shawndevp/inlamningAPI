@@ -74,17 +74,26 @@ class User {
     
         if($statement->rowCount() == 1) { // If user types the right username&password
             $row = $statement->fetch();
-            $this->CreateToken($row['id'], $row['username']);
+            return $this->CreateToken($row['id'], $row['username']);
             
 
         }
+
+
     }
 
 
     function CreateToken($id, $username) {
 
-        if($this->ScanToken($id) != false); 
-        $token = md5(time()) . $id . $username;
+        $ScanTokens = $this->ScanToken($id);
+
+        if($ScanTokens != false) {
+            return $ScanTokens;
+            
+            
+        }
+
+        $token = md5(time() . $id . $username);
         $time = time();
         
         $sql = "INSERT INTO session (user_id, token, login_time) VALUES(:user_id_IN, :token_IN, :login_time_IN)";
@@ -94,20 +103,21 @@ class User {
         $statement->bindParam(":login_time_IN", $time);
 
         $statement->execute();
-        
+        return $token;
 
     }
 
 
     function ScanToken($id) {
-        $sql = "SELECT token, login_time FROM session WHERE user_id=:user_id_IN AND login_time > :TimeLeft_IN";
+        $sql = "SELECT token, login_time FROM session WHERE user_id=:user_id_IN AND login_time > :TimeLeft_IN LIMIT 1";
         $statement = $this->db_connection->prepare($sql);
         $statement->bindParam(":user_id_IN", $id);
-        $statement->bindParam(":TimeLeft_IN", $TimeLeft);
-        $statement->execute();
-
         $TimeLeft = time() - (60*60);
+        $statement->bindParam(":TimeLeft_IN", $TimeLeft);
+        
 
+        $statement->execute();
+        
         $return = $statement->fetch();
 
         if(isset($return['token'])) {
@@ -116,11 +126,6 @@ class User {
         else {
             return false;
         }
-
-
-
-        die();
-        
     }
 
 

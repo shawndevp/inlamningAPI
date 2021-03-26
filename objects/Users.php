@@ -79,6 +79,14 @@ class User {
 
         }
 
+        else {
+            $error = new stdClass();
+                $error->message = "Invalid username or password!";
+                $error->code = "0002";
+                echo json_encode($error);
+                die();
+        }
+
 
     }
 

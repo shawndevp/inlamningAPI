@@ -155,10 +155,8 @@ class User {
             return false;
         }
     }
-    }
-    
-
 }
+    
 
 
 

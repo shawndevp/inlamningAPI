@@ -86,9 +86,100 @@ class Product {
         $statement->bindParam(":category_IN", $category);
         $statement->execute();
         
+        if($statement->rowCount() > 0 ) {
+            $error = new stdClass();
+            $error->message = "Please update atleast one new 'data' to continue";
+            $error->code = "0006";
+            print_r(json_encode($error));
+            die();
+        }
+
+        $error = new stdClass();
+        if(!empty($name)) {
+            $error->message = $this->updateName($id, $name);
+        }
+
+        if(!empty($description)) {
+            $error->message = $this->updateDescription($id, $description);
+        }
+
+        if(!empty($price)) {
+            $error->message = $this->updatePrice($id, $price);
+        }
+
+        if(!empty($category)) {
+            $error->message = $this->updateCategory($id, $category);
+        }
+
+        return $error;
         
         
         
+    }
+
+
+    function updateName($id, $name) {
+        $sql = "UPDATE products SET name = :name_IN WHERE id = :id_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":id_IN", $id);
+        $statement->bindParam(":name_IN", $name);
+        $statement->execute();
+
+        if($statement->rowCount() < 1) {
+            return "The product with id =$id was not found!";
+        }
+
+        else {
+            return "Succesful updated!";
+        }
+    }
+
+    function updateDescription($id, $description) {
+        $sql = "UPDATE products SET description = :description_IN WHERE id = :id_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":id_IN", $id);
+        $statement->bindParam(":description_IN", $description);
+        $statement->execute();
+
+        if($statement->rowCount() < 1) {
+            return "The product with id =$id was not found!";
+        }
+
+        else {
+            return "Succesful updated!";
+        }
+    }
+
+    function updatePrice($id, $price) {
+        $sql = "UPDATE products SET price = :price_IN WHERE id = :id_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":id_IN", $id);
+        $statement->bindParam(":price_IN", $price);
+        $statement->execute();
+
+        if($statement->rowCount() < 1) {
+            return "The product with id =$id was not found!";
+        }
+
+        else {
+            return "Succesful updated!";
+        }
+    }
+
+    function updateCategory($id, $category) {
+        $sql = "UPDATE products SET category = :category_IN WHERE id = :id_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":id_IN", $id);
+        $statement->bindParam(":category_IN", $category);
+        $statement->execute();
+
+        if($statement->rowCount() < 1) {
+            return "The product with id =$id was not found!";
+        }
+
+        else {
+            return "Succesful updated!";
+        }
     }
 
 

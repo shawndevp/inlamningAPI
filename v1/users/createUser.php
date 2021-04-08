@@ -18,6 +18,6 @@ include("../../objects/Users.php");
     }
 
     $user = new User($pdo);
-    $user->CreateUser("shawn", "test", "email@.se");
+    $user->CreateUser("aa", "bb", "cc");
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 include("../../config/database_handler.php");
-include("../../objects/products.php");
+include("../../objects/Products.php");
 
 $name = "";
 $description = "";
@@ -37,3 +37,5 @@ if(isset($_GET['category'])) {
 }
 
 print_r(json_encode($product->updateProducts($id, $name, $description, $price, $category)));
+
+?>

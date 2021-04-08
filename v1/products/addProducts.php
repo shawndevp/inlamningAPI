@@ -1,6 +1,6 @@
 <?php
 include("../../config/database_handler.php");
-include("../../objects/products.php");
+include("../../objects/Products.php");
 
 if(isset($_GET['name']) && isset($_GET['description']) && isset($_GET['category']) && isset($_GET['price']) ){
     $name = $_GET['name'];

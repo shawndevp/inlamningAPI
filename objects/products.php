@@ -13,7 +13,7 @@ class Product {
         $this->db_connection = $db; 
     }
 
-    function addProduct($name_IN, $description_IN, $price_IN, $category_IN) {
+    function addProducts($name_IN, $description_IN, $price_IN, $category_IN) {
         if(!empty($name_IN)&& !empty($description_IN)&& !empty($price_IN)&& !empty($category_IN)){
 
             $sql = "SELECT name, description, price, category FROM products WHERE name = :name_IN AND description = :description_IN AND price = :price_IN AND category = :category_IN";
@@ -56,7 +56,7 @@ class Product {
 
 
 
-    function deleteProduct($productID) {
+    function deleteProducts($productID) {
         $sql = "DELETE FROM products WHERE id =:productID_IN";
         $statement = $this->db_connection->prepare($sql);
         $statement->bindParam(":productID_IN", $productID);
@@ -183,7 +183,12 @@ class Product {
     }
 
 
-
+    function listProducts() {
+        $sql = "SELECT name, description, price, category FROM products";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 

@@ -3,7 +3,7 @@
 class User {
     
     private $db_connection;
-    private $user_id;
+    private $userId;
     private $username;
     private $password;
     private $email;
@@ -104,9 +104,9 @@ class User {
         $token = md5(time() . $id . $username);
         $time = time();
         
-        $sql = "INSERT INTO session (user_id, token, login_time) VALUES(:user_id_IN, :token_IN, :login_time_IN)";
+        $sql = "INSERT INTO session (userId, token, login_time) VALUES(:userId_IN, :token_IN, :login_time_IN)";
         $statement = $this->db_connection->prepare($sql);
-        $statement->bindParam(":user_id_IN", $id);
+        $statement->bindParam(":userId_IN", $id);
         $statement->bindParam(":token_IN", $token);
         $statement->bindParam(":login_time_IN", $time);
 
@@ -117,9 +117,9 @@ class User {
 
 
     function ScanToken($id) {
-        $sql = "SELECT token, login_time FROM session WHERE user_id=:user_id_IN AND login_time > :TimeLeft_IN LIMIT 1";
+        $sql = "SELECT token, login_time FROM session WHERE userId=:userId_IN AND login_time > :TimeLeft_IN LIMIT 1";
         $statement = $this->db_connection->prepare($sql);
-        $statement->bindParam(":user_id_IN", $id);
+        $statement->bindParam(":userId_IN", $id);
         $TimeLeft = time() - (60*60);
         $statement->bindParam(":TimeLeft_IN", $TimeLeft);
         

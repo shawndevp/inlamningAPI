@@ -10,7 +10,7 @@ class Cart {
 
 
 
-    function addToCart($productId_IN, $userId, $token_IN, $quantity_IN) {
+    function addToCart($productId_IN, $userId_IN, $token_IN, $quantity_IN) {
         $sql = "SELECT * FROM cart WHERE productId = :productId_IN AND userId = :userId_IN";
         $statement = $this->db_connection->prepare($sql);
         $statement->bindParam(":userId_IN", $userId_IN);
@@ -29,9 +29,9 @@ class Cart {
         $statement = $this->db_connection->prepare($sql);
         $statement->bindParam(":userId_IN", $userId_IN);
         $statement->execute();
-        $countUser = $statement->rowCount();
+        $countUser = $statement->fetch();
 
-        if($countUser < 1) {
+        if(!isset($countUser[0])) {
             $error = new stdClass();
             $error->message = "User not found!";
             $error->code = "0005";
@@ -73,7 +73,35 @@ class Cart {
     }
 
 
+    function deleteFromCart($productId_IN, $userId_IN) {
+        $sql = "SELECT * FROM cart WHERE productId = :productId_IN AND userId = :userId_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":productId_IN", $productId_IN);
+        $statement->bindParam(":userId_IN", $userId_IN);
+        $statement->execute();
+        $delete = $statement->fetch();
 
+        if(!isset($delete[0])) {
+            $error = new stdClass();
+            $error->message = "ID not found!";
+            $error->code = "0004";
+            print_r(json_encode($error));
+            die();
+        }
+
+        $sql = "DELETE FROM cart WHERE productId = :productId_IN AND userId = :userId_IN";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":productId_IN", $productId_IN);
+        $statement->bindParam(":userId_IN", $userId_IN);
+
+        if($statement->execute()) {
+            $message = new stdClass();
+            $message->text = "The product ID $productId_IN was deleted from the cart!";
+            return $message;
+        }
+        
+
+    }
 
 
 }

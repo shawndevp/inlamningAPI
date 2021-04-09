@@ -20,17 +20,25 @@ $user = new User($pdo);
 $cart = new Cart($pdo);
 
 if($user->ValidationToken($token)) {
-    if(isset($_GET['userId']) & isset($_GET['productId']) & isset($_GET['quantity'])){
+    if(isset($_GET['userId']) && isset($_GET['productId'])){
     $productId = $_GET['productId'];
     $userId = $_GET['userId'];
-    $quantity = $_GET['quantity'];
-    print_r(json_encode($cart->addToCart($productId,$userId,$token,$quantity)));
-    } else {
+    print_r(json_encode($cart->deleteFromCart($productId,$userId)));
+    } 
+    
+    else {
         $error = new stdClass();
-        $error->message = "Product ID or User ID or Quantity not found";
-        $error->code = "0011";
-        echo json_encode($error);
+        $error->message = "ID not found!";
+        $error->code = "0004";
+        print_r(json_encode($error));
         die();
     }
-
 }
+
+    else {
+        $error = new stdClass();
+        $error->message = "Token expired! Please Login to create a new token!";
+        $error->code = "00012";
+        print_r(json_encode($error));
+        die();
+    }

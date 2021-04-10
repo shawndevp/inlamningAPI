@@ -104,6 +104,18 @@ class Cart {
     }
 
 
+    function checkoutCart ($token_IN) {
+        $sql = "DELETE FROM cart WHERE token = :token_IN;";
+        $statement = $this->db_connection->prepare($sql);
+        $statement->bindParam(":token_IN", $token_IN);
+
+        if($statement->execute()) {
+            $message = new stdClass();
+            $message->text = "Successful checkout!";
+            return $message;
+        }
+    }
+
 }
 
 

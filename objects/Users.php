@@ -35,6 +35,8 @@ class User {
         $sql = "INSERT INTO users (username, password, email) VALUES(:username_IN, :password_IN, :email_IN)";
         $statement = $this->db_connection->prepare($sql);
         $statement->bindParam(":username_IN", $username_IN);
+        $salt = "7GHF34T6B7#i&gfdbbb/!";
+        $password_IN = md5($password_IN.$salt);
         $statement->bindParam(":password_IN", $password_IN);
         $statement->bindParam(":email_IN", $email_IN);
 

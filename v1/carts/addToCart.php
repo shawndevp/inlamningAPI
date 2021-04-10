@@ -11,7 +11,7 @@ if(isset($_GET['token'])){
 else {
     $error = new stdClass();
     $error->message = "No token found!";
-    $error->code = "0010";
+    $error->code = "0008";
     print_r(json_encode($error));
     die();
 }

@@ -12,7 +12,7 @@ if(isset($_GET['token'])){
         else {
         $error = new stdClass();
         $error->message = "No token found!";
-        $error->code = "0010";
+        $error->code = "0008";
         print_r(json_encode($error));
         die();
         }
@@ -29,7 +29,7 @@ if($user->ValidationToken($token)) {
         else {
         $error = new stdClass();
         $error->message = "Token expired! Please Login to create a new token!";
-        $error->code = "00012";
+        $error->code = "0009";
         print_r(json_encode($error));
         die();
         }

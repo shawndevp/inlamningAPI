@@ -1,3 +1,9 @@
+### COPYRIGHT ©
+
+All rights served 
+https://github.com/shawndevp
+
+
 #### Installation
 
 DROP DATABASE IF EXISTS apidb; CREATE DATABASE apidb;

@@ -82,3 +82,17 @@ COMMIT;
 - Updating products can be done whenever without thinking about the token. The token that is valid is only needed to get all products from the database. 
 - To be able to add, delete or update products from the cart. You will need a valid token.
 - The tokens expiring time is on 1 hour (60 minutes). It can be prolonged while you are active on the site. Otherwise You will need to make a new token when not being active on the site for atleast 60 minutes. 
+
+
+#### Usage of endpoints
+
+Register User: 
+http://localhost/inlamningAPI/v1/users/createUser.php?username=(username)&password=(password)&email=(email)
+
+
+Login user:
+http://localhost/inlamningAPI/v1/users/login.php?username=(username)&password=(password)
+
+
+Create products:
+http://localhost/inlamningAPI/v1/products/addProducts.php

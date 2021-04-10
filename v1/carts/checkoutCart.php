@@ -21,7 +21,7 @@ if(isset($_GET['token'])){
     $user = new User($pdo);
     $cart = new Cart($pdo);
 
-
+         // Checks if there is a valid token before the product is checked out!
 if($user->ValidationToken($token)) {
     print_r(json_encode($cart->checkoutCart($token)));
 }

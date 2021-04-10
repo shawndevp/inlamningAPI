@@ -19,6 +19,7 @@ else {
 $user = new User($pdo);
 $cart = new Cart($pdo);
 
+     // Checks if there is a valid token before the product is deleted from the cart
 if($user->ValidationToken($token)) {
     if(isset($_GET['userId']) && isset($_GET['productId'])){
     $productId = $_GET['productId'];
